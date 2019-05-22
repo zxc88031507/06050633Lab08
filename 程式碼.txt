@@ -1,0 +1,66 @@
+Check 1
+#include <Ultrasonic.h>
+#include <LiquidCrystal.h>
+#define TRIGGER_PIN 14
+#define ECHO_PIN 13
+LiquidCrystal lcd(12, 11, 5, 4, 3, 10);
+Ultrasonic ultrasonic(TRIGGER_PIN, ECHO_PIN);
+void setup() {
+  lcd.begin(16, 2);
+}
+void loop() {
+  float cmMsec;
+  long microsec = ultrasonic.timing();
+  cmMsec = ultrasonic.convert(microsec, Ultrasonic::CM); // 計算距離，單位: 公分
+  lcd.print("CM: "); lcd.print(cmMsec);
+  delay(1000);
+  lcd.clear();
+}
+Check 2
+
+#include <Ultrasonic.h>
+#include <LiquidCrystal.h>
+#define TRIGGER_PIN 14
+#define ECHO_PIN 13
+LiquidCrystal lcd(12, 11, 5, 4, 3, 10);
+Ultrasonic ultrasonic(TRIGGER_PIN, ECHO_PIN);
+void setup() {
+  lcd.begin(16, 2);
+  pinMode(2, INPUT_PULLUP);
+  attachInterrupt(2, int0, RISING); 
+}
+void loop() {
+}
+void int0() {
+lcd.clear();
+  float cmMsec;
+  long microsec = ultrasonic.timing();
+  cmMsec = ultrasonic.convert(microsec, Ultrasonic::CM); // 計算距離，單位: 公分
+  lcd.print("CM: "); lcd.print(cmMsec);
+}
+Check 3
+#include <Ultrasonic.h>
+#include <LiquidCrystal.h>
+#define TRIGGER_PIN 14
+#define ECHO_PIN 13
+LiquidCrystal lcd(12, 11, 5, 4, 3, 10);
+Ultrasonic ultrasonic(TRIGGER_PIN, ECHO_PIN);
+void setup() {
+  lcd.begin(16, 2);
+  pinMode(6, INPUT);
+  pinMode(2, INPUT_PULLUP);
+  attachInterrupt(2, int0, RISING);
+}
+void loop() {
+  if (digitalRead(6))
+    noInterrupts();
+  else
+    interrupts();
+}
+void int0() {
+  lcd.clear();
+  float cmMsec;
+  long microsec = ultrasonic.timing();
+  cmMsec = ultrasonic.convert(microsec, Ultrasonic::CM); // 計算距離，單位: 公分
+  lcd.print("CM: "); lcd.print(cmMsec);
+}
